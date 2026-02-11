@@ -62,3 +62,49 @@
 
 </body>
 </html>
+<script>
+const btn = document.getElementById("btn");
+
+const SpeechRecognition =
+  window.SpeechRecognition || window.webkitSpeechRecognition;
+const recognition = new SpeechRecognition();
+
+recognition.lang = "hi-IN";
+recognition.continuous = false;
+
+function speak(text) {
+  const speech = new SpeechSynthesisUtterance(text);
+  speech.lang = "hi-IN";
+  window.speechSynthesis.speak(speech);
+}
+
+btn.onclick = () => {
+  speak("Haan bolo, main sun raha hoon");
+  recognition.start();
+};
+
+recognition.onresult = (event) => {
+  const command = event.results[0][0].transcript.toLowerCase();
+  document.getElementById("output").innerText = command;
+
+  // 👇 YAHAN APNI COMMAND ADD KARO
+  if (command.includes("hello")) {
+    speak("Hello, main tumhara voice assistant hoon");
+  } 
+  else if (command.includes("time")) {
+    const time = new Date().toLocaleTimeString();
+    speak("Abhi time hai " + time);
+  } 
+  else if (command.includes("youtube")) {
+    speak("YouTube khol raha hoon");
+    window.open("https://youtube.com", "_blank");
+  } 
+  else if (command.includes("google")) {
+    speak("Google khol raha hoon");
+    window.open("https://google.com", "_blank");
+  } 
+  else {
+    speak("Ye command mujhe samajh nahi aayi");
+  }
+};
+</script>
