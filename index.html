@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <title>Mera Voice Assistant</title>
+  <style>
+    body {
+      font-family: Arial;
+      text-align: center;
+      margin-top: 50px;
+    }
+    button {
+      font-size: 20px;
+      padding: 15px 25px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🤖 Mera Hindi Voice Assistant</h1>
+  <button onclick="startListening()">🎤 बोलिए</button>
+  <p id="output"></p>
+
+  <script>
+    const output = document.getElementById("output");
+
+    function speak(text) {
+      const speech = new SpeechSynthesisUtterance(text);
+      speech.lang = "hi-IN";
+      window.speechSynthesis.speak(speech);
+    }
+
+    function startListening() {
+      const recognition = new webkitSpeechRecognition();
+      recognition.lang = "hi-IN";
+
+      recognition.onresult = function(event) {
+        const command = event.results[0][0].transcript;
+        output.innerText = "आपने कहा: " + command;
+
+        // 👇👇 APNE COMMAND YAHA ADD KARO 👇👇
+
+        if (command.includes("नमस्ते")) {
+          speak("नमस्ते, मैं आपकी क्या मदद कर सकता हूँ");
+        }
+        else if (command.includes("समय")) {
+          const time = new Date().toLocaleTimeString();
+          speak("अभी समय है " + time);
+        }
+        else if (command.includes("यूट्यूब खोलो")) {
+          speak("यूट्यूब खोल रहा हूँ");
+          window.open("https://youtube.com");
+        }
+        else {
+          speak("माफ़ कीजिए, यह कमांड समझ नहीं आई");
+        }
+      };
+
+      recognition.start();
+    }
+  </script>
+
+</body>
+</html>
